@@ -1,0 +1,144 @@
+---
+title: "Evidencia"
+author: "Justin Valdez"
+date: "10/29/2021"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Lee cuidadosamente la Situación Problema 3
+2. Importa a R Studio el archivo de datos de la Situación Problema 3
+
+```{r}
+library(readxl)
+Ventas_AgriStar_2021 <- read_excel("/Users/justin/Desktop/r/Ventas AgriStar 2021.xlsx")
+View(Ventas_AgriStar_2021)
+library(dplyr)
+```
+
+3.- Utilizar funciones de análisis de datos: class(), str(), sumary(), head(), names( )
+
+```{r}
+class(Ventas_AgriStar_2021)
+str(Ventas_AgriStar_2021)
+summary(Ventas_AgriStar_2021)
+head(Ventas_AgriStar_2021)
+names(Ventas_AgriStar_2021)
+```
+
+4.- ¿Cuántas observaciones tiene la base de datos?
+
+La base de datos tiene 36 observaciones, esto lo sabemos con la funcion str
+
+5.- ¿Cuántas variables tiene la base de datos?
+
+La base de datos tiene 3 variables, esto lo sabemos con la funcion str o con environment
+
+6. Utiliza las siguientes funciones de la biblioteca ggplot2 para representar de manera gráfica las variables: gráfico de barras, histograma, línea de tendencia, lineal suavizada :   barplot(), geom_histogram, geom_point,  geom_smooth
+
+
+```{r}
+barplot(Ventas_AgriStar_2021$Ventas ~ Ventas_AgriStar_2021$Fecha, main = "Ventas por fecha", xlab = "Fecha", ylab = "Volumen de Ventas", col= rainbow(36))
+```
+```{r}
+barplot(Ventas_AgriStar_2021$Ventas ~ Ventas_AgriStar_2021$Mes, main = "Ventas por Mes", xlab = "Mes", ylab = "Volumen de Ventas", col= rainbow(36))
+```
+
+
+```{r}
+library(ggplot2)
+ggplot(data = Ventas_AgriStar_2021) + ggtitle("Frequencia absoluta de ventas") +
+	geom_histogram(mapping = aes(x = Ventas), color = "red")
+```
+
+```{r}
+
+library(ggplot2)
+ggplot(data = Ventas_AgriStar_2021) + ggtitle("Disperción de volumen de ventas por mes") +
+  	geom_point(mapping = aes(x = Mes, y = Ventas, color=Ventas))
+
+```
+
+
+```{r}
+x<-Ventas_AgriStar_2021$Mes
+y<-Ventas_AgriStar_2021$VentasVol
+ggplot(data = Ventas_AgriStar_2021) + ggtitle("Predicción de ventas por mes") +
+  	geom_point(mapping = aes(x = Mes, y = Ventas, color = Ventas))+
+    geom_smooth(mapping = aes(x = Mes, y = Ventas))
+```
+
+7. Calcula  la recta de regresión que permite estimar valores de Y en función de los valores de la variable X.
+
+
+```{r}
+plot(Ventas_AgriStar_2021$Mes,Ventas_AgriStar_2021$Ventas, main = "Recta de regresión", xlab = "Mes", ylab = "Volumen de Ventas", col= Ventas_AgriStar_2021$Ventas)
+abline(lm(Ventas_AgriStar_2021$Ventas~Ventas_AgriStar_2021$Mes), col="blue")
+```
+
+8. Estima los valores de Y (doce periodos) , utilizando la recta de regresión, es decir los meses de 2021 y a total 2021
+
+```{r}
+regresion<-lm(Ventas_AgriStar_2021$Ventas~Ventas_AgriStar_2021$Mes,)
+summary(regresion)
+```
+
+```{r}
+mes1<-1192.073+(-13.439)*37
+mes1
+
+mes2<-1192.073+(-13.439)*38
+mes2
+
+mes3<-1192.073+(-13.439)*39
+mes3
+
+mes4<-1192.073+(-13.439)*40
+mes4
+
+mes5<-1192.073+(-13.439)*41
+mes5
+
+mes6<-1192.073+(-13.439)*42
+mes6
+
+mes7<-1192.073+(-13.439)*43
+mes7
+
+mes8<-1192.073+(-13.439)*44
+mes8
+
+mes9<-1192.073+(-13.439)*45
+mes9
+
+mes10<-1192.073+(-13.439)*46
+mes10
+
+mes11<-1192.073+(-13.439)*47
+mes11
+
+mes12<-1192.073+(-13.439)*48
+mes12
+```
+
+```{r}
+sum(mes1,mes2,mes3,mes4,mes5,mes6,mes7,mes8,mes9,mes10,mes11,mes12)
+```
+
+
+9. Estima el coeficiente de determinación R^2  ¿Cómo interpretas el coeficiente?
+
+```{r}
+regresion<-lm(Ventas_AgriStar_2021$Ventas~Ventas_AgriStar_2021$Mes,)
+summary(regresion)
+```
+
+R-squared:  0.08835,	Adjusted R-squared:  0.06154 
+
+El coeficiente se aleja mucho de un número óptimo de 1. Debido a esto podemos determinar que no es confiable para realizar estimaciones de las ventas. 
+
